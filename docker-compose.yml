@@ -1,0 +1,27 @@
+services:
+
+  gin-api-template:
+    build: .
+    image: gin-api-template
+    container_name: gin-api-template
+
+    environment:
+      - TZ=Asia/Kolkata
+      - LOG_LEVEL=debug
+      - LOG_STDOUT=false
+      - LOG_FILE=gin-api.log
+      - LOG_PATH=./log
+      - LOG_MAX_SIZE=10
+      - LOG_MAX_BACKUPS=3
+      - LOG_MAX_AGE=7
+      - LOG_COMPRESS=false
+      - SERVER_PORT=8086
+      - VERSION=v1.0.0
+      - SELF_API_TOKEN=
+      - REQ_RATE_LIMIT=10
+      - REQ_RATE_LIMIT_TIME=2
+
+    ports:
+     - "127.0.0.1:8086:8086"
+    
+    restart: always
