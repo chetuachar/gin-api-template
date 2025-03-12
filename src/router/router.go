@@ -37,7 +37,9 @@ func NewRouter() *gin.Engine {
 	v1 := router.Group("/v1")
 	v1.Use(middleware.LogRequestInfo(), middleware.Authenticate)
 	{
+		v1.GET("/health", controller.HealthCheck)
 		v1.GET("/hi", middleware.RateLimitMiddleware(tb), controller.SayHelow)
 	}
+
 	return router
 }
