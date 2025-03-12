@@ -11,6 +11,23 @@ import (
 	ginratelimit "github.com/ljahier/gin-ratelimit"
 )
 
+// CORSMiddleware function to handle the CORS.
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers",
+			"Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Auth-Token, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	}
+}
+
+// Loggin the https requiest.
 func LogRequestInfo() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// accessLogMap := make(map[string]string)
@@ -37,6 +54,7 @@ func LogRequestInfo() gin.HandlerFunc {
 	}
 }
 
+// Validation of Auth-Token
 func Authenticate(c *gin.Context) {
 	if !(c.Request.Header.Get("Auth-Token") == config.Appconfig.GetString("SELF_API_TOKEN")) {
 		c.AbortWithStatusJSON(401, gin.H{
@@ -47,6 +65,7 @@ func Authenticate(c *gin.Context) {
 	c.Next()
 }
 
+// RateLimit the end points
 func RateLimitMiddleware(tb *ginratelimit.TokenBucket) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if !tb.Allow(c.ClientIP()) {

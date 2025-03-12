@@ -32,10 +32,12 @@ func NewRouter() *gin.Engine {
 		config.Appconfig.GetInt("REQ_RATE_LIMIT"),
 		config.Appconfig.GetDuration("REQ_RATE_LIMIT_TIME")*time.Minute)
 
+	// CORS middleware for Front end application
+	router.Use(middleware.CORSMiddleware())
 	v1 := router.Group("/v1")
-	v1.Use(middleware.LogRequestInfo(), middleware.RateLimitMiddleware(tb), middleware.Authenticate)
+	v1.Use(middleware.LogRequestInfo(), middleware.Authenticate)
 	{
-		v1.GET("/", controller.SayHelow)
+		v1.GET("/hi", middleware.RateLimitMiddleware(tb), controller.SayHelow)
 	}
 	return router
 }
