@@ -6,7 +6,7 @@
     <title>Log Viewer</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        input { padding: 5px; width: 300px; margin-bottom: 10px; }
+        input, select { padding: 5px; margin-bottom: 10px; }
         
         /* Scrollable Table Container */
         .table-container { 
@@ -29,13 +29,21 @@
     
         .hidden { display: none; } /* Hide rows that don’t match search */
     </style>
-    
 </head>
 <body>
     <h1>Log Viewer</h1>
 
     <!-- Search Input -->
     <input type="text" id="search" placeholder="Search logs..." onkeyup="filterLogs()">
+    
+    <!-- Log Level Dropdown -->
+    <select id="levelFilter" onchange="filterLogs()">
+        <option value="">All Levels</option>
+        <option value="debug">Debug</option>
+        <option value="info">Info</option>
+        <option value="error">Error</option>
+        <option value="warning">Warning</option>
+    </select>
 
     <!-- Scrollable Table -->
     <div class="table-container">
@@ -51,7 +59,7 @@
                 {{range .logs}}
                 <tr>
                     <td class="time-column">{{.Time}}</td>
-                    <td>{{.Level}}</td>
+                    <td class="level">{{.Level}}</td>
                     <td class="msg-column">{{.Msg}}</td>
                 </tr>
                 {{end}}
@@ -61,15 +69,20 @@
 
     <script>
         function filterLogs() {
-            let query = document.getElementById("search").value.toLowerCase();
+            let searchQuery = document.getElementById("search").value.toLowerCase();
+            let selectedLevel = document.getElementById("levelFilter").value.toLowerCase();
             let rows = document.getElementById("log-table").getElementsByTagName("tr");
 
             for (let row of rows) {
                 let logText = row.textContent.toLowerCase();
-                row.classList.toggle("hidden", !logText.includes(query));
+                let level = row.querySelector(".level").textContent.toLowerCase();
+
+                let matchesSearch = logText.includes(searchQuery);
+                let matchesLevel = selectedLevel === "" || level === selectedLevel;
+
+                row.classList.toggle("hidden", !(matchesSearch && matchesLevel));
             }
         }
     </script>
 </body>
-
 </html>
