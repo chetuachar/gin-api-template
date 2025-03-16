@@ -34,12 +34,15 @@ func NewRouter() *gin.Engine {
 
 	// CORS middleware for Front end application
 	router.Use(middleware.CORSMiddleware())
+	// Load HTML templates
+	router.LoadHTMLGlob("./src/templates/*")
 	v1 := router.Group("/v1")
 	v1.Use(middleware.LogRequestInfo(), middleware.Authenticate)
 	{
 		v1.GET("/health", controller.HealthCheck)
 		v1.GET("/hi", middleware.RateLimitMiddleware(tb), controller.SayHelow)
 	}
+	router.GET("/logs", controller.GetLogs)
 
 	return router
 }

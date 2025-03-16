@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input { padding: 5px; width: 300px; margin-bottom: 10px; }
+        
+        /* Scrollable Table Container */
+        .table-container { 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            padding: 10px; 
+            overflow-x: auto; /* Scroll if table is too wide */
+            max-width: 100%;
+        }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+    
+        /* Prevent wrapping for time column */
+        .time-column { white-space: nowrap; }
+    
+        /* Allow wrapping only for message column */
+        .msg-column { word-wrap: break-word; white-space: normal; max-width: 500px; }
+    
+        .hidden { display: none; } /* Hide rows that don’t match search */
+    </style>
+    
+</head>
+<body>
+    <h1>Log Viewer</h1>
+
+    <!-- Search Input -->
+    <input type="text" id="search" placeholder="Search logs..." onkeyup="filterLogs()">
+
+    <!-- Scrollable Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Level</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody id="log-table">
+                {{range .logs}}
+                <tr>
+                    <td class="time-column">{{.Time}}</td>
+                    <td>{{.Level}}</td>
+                    <td class="msg-column">{{.Msg}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterLogs() {
+            let query = document.getElementById("search").value.toLowerCase();
+            let rows = document.getElementById("log-table").getElementsByTagName("tr");
+
+            for (let row of rows) {
+                let logText = row.textContent.toLowerCase();
+                row.classList.toggle("hidden", !logText.includes(query));
+            }
+        }
+    </script>
+</body>
+
+</html>
