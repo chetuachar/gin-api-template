@@ -58,6 +58,7 @@ A simple RESTful API built with Go and the Gin framework. This project serves as
     export SELF_API_TOKEN=f144a0da7c41f4725d83c50ea4fdf1bd
     export REQ_RATE_LIMIT=10
     export REQ_RATE_LIMIT_TIME=2
+    export LOG_SHOW_PASSWD=XyAdjllll
 
     ```
 
@@ -75,15 +76,16 @@ A simple RESTful API built with Go and the Gin framework. This project serves as
 
 | Method | Endpoint                             | Description                               |
 |--------|--------------------------------------|-------------------------------------------|
-| GET    | `/v1/` | Hi back |
-
+| GET    | `/v1/hi` | Hi back |
+| GET    | `/health` | Give you the api running status. |
+| GET    | `/logs?passwd={password}` | Load the html template, (logging informations.) |
 
 ## Example request
 
 1. Getting information.
 
     ```bash
-    curl -X GET "https://<dns_name>/v1/" \
+    curl -X GET "https://<dns_name>/v1/hi" \
         -H "Auth-Token: {token}" \
         -H "Content-Type: application/json"
     ```

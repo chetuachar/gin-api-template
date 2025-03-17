@@ -23,7 +23,7 @@ func SayHelow(c *gin.Context) {
 func GetLogs(c *gin.Context) {
 	// Authentication check
 	passwd := c.Query("passwd")
-	if passwd != "Chethan@123" {
+	if passwd != config.Appconfig.GetString("LOG_SHOW_PASSWD") {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}

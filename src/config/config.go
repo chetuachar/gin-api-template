@@ -28,6 +28,7 @@ func setDefaults() {
 	config.SetDefault("SELF_API_TOKEN", "f144a0da7c41f4725d83c50ea4fdf1bd")
 	config.SetDefault("REQ_RATE_LIMIT", 10)
 	config.SetDefault("REQ_RATE_LIMIT_TIME", 5)
+	config.SetDefault("LOG_SHOW_PASSWD", "Chethan@123")
 }
 
 func GetConfig() *viper.Viper {
