@@ -1,0 +1,81 @@
+basePath: /
+info:
+  contact:
+    email: chethuchethan72@gamil.com
+    name: Chethan NV
+    url: https://chetuachar.github.io
+  description: This is a sample Gin FAST API basic Setup.
+  title: Gin API Template
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: do health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Check the gin server health check
+      tags:
+      - health
+  /logs:
+    get:
+      description: Returns the last 100 log entries in HTML format. Requires a password
+        for authentication.
+      parameters:
+      - description: Password for log access
+        in: query
+        name: passwd
+        required: true
+        type: string
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: HTML page with logs
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Failed to load logs
+          schema:
+            type: string
+      summary: View last 100 logs
+      tags:
+      - logs
+  /v1/hi:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Test api sending
+      tags:
+      - v1
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Auth-Token
+    type: apiKey
+swagger: "2.0"

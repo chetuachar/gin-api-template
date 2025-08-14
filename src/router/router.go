@@ -9,8 +9,12 @@ import (
 	"net/http"
 	"time"
 
+	docs "gin-api-template/docs"
+
 	"github.com/gin-gonic/gin"
 	ginratelimit "github.com/ljahier/gin-ratelimit"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func Init() {
@@ -26,7 +30,11 @@ func Init() {
 }
 
 func NewRouter() *gin.Engine {
+	
+
 	router := gin.New()
+	docs.SwaggerInfo.BasePath = "/"
+
 	logger.InfoLn("Listening and serving HTTP on port:" + fmt.Sprintf("%d", config.Appconfig.GetInt("SERVER_PORT")))
 	tb := ginratelimit.NewTokenBucket(
 		config.Appconfig.GetInt("REQ_RATE_LIMIT"),
@@ -43,6 +51,7 @@ func NewRouter() *gin.Engine {
 	}
 	router.GET("/health", controller.HealthCheck)
 	router.GET("/logs", controller.GetLogs)
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	return router
 }

@@ -7,6 +7,21 @@ import (
 )
 
 func main() {
+	// @title Gin API Template
+	// @version 1.0.0
+	// @description This is a sample Gin FAST API basic Setup.
+
+	// @contact.name Chethan NV
+	// @contact.url https://chetuachar.github.io
+	// @contact.email chethuchethan72@gamil.com
+
+
+	// @BasePath /
+	// @securityDefinitions.apikey ApiKeyAuth
+	// @in header
+	// @name Auth-Token
+
+	
 	config.Init()
 	config.Appconfig = config.GetConfig()
 	logger.Init()
